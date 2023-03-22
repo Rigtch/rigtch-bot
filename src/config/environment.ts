@@ -7,6 +7,8 @@ const environmentVariablesSchema = Joi.object()
       .valid('development', 'production', 'test')
       .default('development'),
     TOKEN: Joi.string().required(),
+    CLIENT_ID: Joi.string().required(),
+    GUILD_ID: Joi.string().required(),
   })
   .unknown()
 
@@ -18,4 +20,6 @@ if (error) throw new Error(`Config validation error: ${error.message}`)
 
 export const config = {
   token: environmentVariables.TOKEN,
+  clientId: environmentVariables.CLIENT_ID,
+  guildId: environmentVariables.GUILD_ID,
 }
