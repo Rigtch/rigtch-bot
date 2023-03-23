@@ -1,8 +1,6 @@
 import { Client, Events } from 'discord.js'
 
-import { Command } from './types'
-import { PingCommand } from './ping.command'
-import { ApplyCommand } from './apply.command'
+import { Command, PingCommand, ApplyCommand } from '~/commands'
 
 export interface CommandsProviderConfig {
   privateBetaRequestsChannelId: string
