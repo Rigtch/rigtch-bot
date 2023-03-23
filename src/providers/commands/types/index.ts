@@ -5,8 +5,8 @@ import {
 } from 'discord.js'
 
 export abstract class Command {
-  data: SlashCommandBuilder
-  execute: (
+  public data: SlashCommandBuilder
+  public execute: (
     interaction: ChatInputCommandInteraction<CacheType>
   ) => Promise<void>
 }
