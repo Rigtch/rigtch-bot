@@ -11,7 +11,7 @@ export class PingCommand implements Command {
     .setName('ping')
     .setDescription('Replies with Pong!')
 
-  async execute(interaction: ChatInputCommandInteraction<CacheType>) {
+  public async execute(interaction: ChatInputCommandInteraction<CacheType>) {
     await interaction.reply('Pong!')
   }
 }
