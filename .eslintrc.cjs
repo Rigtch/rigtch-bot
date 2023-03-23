@@ -60,6 +60,12 @@ module.exports = {
         'newlines-between': 'always',
       },
     ],
+    'unicorn/consistent-function-scoping': [
+      'error',
+      {
+        checkArrowFunctions: false,
+      },
+    ],
     'unicorn/prevent-abbreviations': [
       'error',
       {
