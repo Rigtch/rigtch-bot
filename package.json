@@ -6,7 +6,15 @@
   "scripts": {
     "start": "vite-node src/main.ts",
     "start:dev": "yarn start --watch",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "lint": "yarn lint:js",
+    "lint:fix": "yarn format && yarn lint:js --fix",
+    "lint:js": "eslint --ext \".js,.ts,.md,.jsx,.tsx,.mdx\" --ignore-path .gitignore .",
+    "format": "prettier --write .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage"
   },
   "repository": {
     "type": "git",
@@ -48,7 +56,8 @@
     "prettier": "^2.8.6",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "4.1.2",
-    "typescript": "^5.0.2"
+    "typescript": "^5.0.2",
+    "vitest": "^0.29.7"
   },
   "dependencies": {
     "@discordjs/rest": "^1.6.0",
