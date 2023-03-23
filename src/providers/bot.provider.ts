@@ -1,6 +1,6 @@
 import { Client, GatewayIntentBits, Partials, REST, Routes } from 'discord.js'
 
-import { CommandsProvider } from './commands'
+import { CommandsProvider } from './commands.provider'
 
 export interface BotProviderConfig {
   token: string

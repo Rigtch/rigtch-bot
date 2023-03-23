@@ -1,2 +1,2 @@
 export * from './bot.provider'
-export * from './commands'
+export * from './commands.provider'
