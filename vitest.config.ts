@@ -12,11 +12,15 @@ export default mergeConfig(
       coverage: {
         exclude: [
           '**/node_modules/**',
-          '**/modules/**',
           '**/*.spec.ts',
-          '**/*.spec.ts',
+          '**/*.d.ts',
+          '**/config/**',
+          '**/types/**',
+          '**/index.ts',
         ],
+        include: ['**/src/**/*.ts'],
         reporter: ['text', 'json', 'html'],
+        all: true,
       },
     },
     define: {
