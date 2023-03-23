@@ -26,9 +26,6 @@
     "url": "https://github.com/Rigtch/rigtch-bot/issues"
   },
   "sideEffects": false,
-  "lint-staged": {
-    "*.{js,ts}": "eslint --cache --fix"
-  },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
