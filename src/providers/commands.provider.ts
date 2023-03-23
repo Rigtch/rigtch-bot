@@ -15,7 +15,7 @@ export class CommandsProvider {
     private readonly config: CommandsProviderConfig
   ) {}
 
-  get commandsBodies() {
+  get commandBodies() {
     return this.commands.map(({ data }) => data)
   }
 

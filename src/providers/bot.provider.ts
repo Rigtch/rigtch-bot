@@ -53,7 +53,7 @@ export class BotProvider {
           this.config.guildId
         ),
         {
-          body: this.commandsProvider.commandsBodies,
+          body: this.commandsProvider.commandBodies,
         }
       )
     })
