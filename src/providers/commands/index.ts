@@ -2,18 +2,34 @@ import { Client, Events } from 'discord.js'
 
 import { Command } from './types'
 import { PingCommand } from './ping.command'
+import { ApplyCommand } from './apply.command'
+
+export interface CommandsProviderConfig {
+  privateBetaRequestsChannelId: string
+  guildId: string
+}
 
 export class CommandsProvider {
   private readonly commands: Command[] = []
 
-  constructor(private readonly client: Client) {}
+  constructor(
+    private readonly client: Client,
+    private readonly config: CommandsProviderConfig
+  ) {}
 
   get commandsBodies() {
     return this.commands.map(({ data }) => data)
   }
 
+  private async fetchGuild() {
+    return await this.client.guilds.fetch(this.config.guildId)
+  }
+
   public async loadCommands() {
-    this.commands.push(new PingCommand())
+    this.commands.push(
+      new PingCommand(),
+      new ApplyCommand(await this.fetchGuild(), this.config)
+    )
   }
 
   public async watchInteractions() {

@@ -6,6 +6,7 @@ export interface BotProviderConfig {
   token: string
   clientId: string
   guildId: string
+  privateBetaRequestsChannelId: string
 }
 
 export class BotProvider {
@@ -26,7 +27,7 @@ export class BotProvider {
       partials: [Partials.Channel],
     })
 
-    this.commandsProvider = new CommandsProvider(this.client)
+    this.commandsProvider = new CommandsProvider(this.client, this.config)
     this.rest = new REST({ version: '10' }).setToken(config.token)
   }
 
@@ -38,9 +39,9 @@ export class BotProvider {
         resolve()
       })
 
-      this.initialise()
-
       this.client.login(this.config.token)
+
+      this.initialise()
     })
   }
 
