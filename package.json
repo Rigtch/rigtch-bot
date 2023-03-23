@@ -4,8 +4,8 @@
   "description": "",
   "main": "src/main.ts",
   "scripts": {
-    "start": "ts-node src/main.ts",
-    "start:dev": "nodemon --watch \"src/**\" --ext \"ts,json\" --ignore \"src/**/*.test.ts\" --exec yarn start",
+    "start": "vite-node src/main.ts",
+    "start:dev": "yarn start --watch",
     "prepare": "husky install"
   },
   "repository": {
@@ -54,6 +54,8 @@
     "@discordjs/rest": "^1.6.0",
     "discord.js": "^14.8.0",
     "dotenv": "^16.0.3",
-    "joi": "^17.9.1"
+    "joi": "^17.9.1",
+    "vite": "^4.2.1",
+    "vite-node": "^0.29.7"
   }
 }
