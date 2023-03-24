@@ -17,6 +17,7 @@ export default mergeConfig(
           '**/config/**',
           '**/types/**',
           '**/index.ts',
+          '**/main.ts',
         ],
         include: ['**/src/**/*.ts'],
         reporter: ['text', 'json', 'html'],
