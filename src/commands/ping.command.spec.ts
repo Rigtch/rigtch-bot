@@ -4,7 +4,7 @@ import { CacheType, ChatInputCommandInteraction } from 'discord.js'
 
 import { PingCommand } from './ping.command'
 
-describe('Command - Ping', () => {
+describe('PingCommand', () => {
   let pingCommand: PingCommand
 
   beforeEach(() => {
