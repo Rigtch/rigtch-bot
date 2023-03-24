@@ -41,6 +41,22 @@ describe('ApplyCommand', () => {
     })
   })
 
+  describe('privateBetaRequestsChannel', () => {
+    const channelMock = mock<GuildTextBasedChannel>()
+
+    test('should return correct channel', () => {
+      Object.defineProperty(applyCommand['guild'].channels, 'cache', {
+        value: {
+          filter: vi.fn().mockReturnValue({
+            get: vi.fn().mockReturnValue(channelMock),
+          }),
+        },
+      })
+
+      expect(applyCommand.privateBetaRequestsChannel).toEqual(channelMock)
+    })
+  })
+
   describe('execute', () => {
     let interactionMock: ChatInputCommandInteraction<CacheType>
 
