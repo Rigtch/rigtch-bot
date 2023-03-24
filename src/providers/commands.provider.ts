@@ -1,4 +1,4 @@
-import { Client, Events } from 'discord.js'
+import { Client, Events, Interaction, CacheType } from 'discord.js'
 
 import { Command, PingCommand, ApplyCommand } from '~/commands'
 
@@ -23,6 +23,18 @@ export class CommandsProvider {
     return await this.client.guilds.fetch(this.config.guildId)
   }
 
+  private async executeCommand(interaction: Interaction<CacheType>) {
+    if (!interaction.isChatInputCommand()) return
+
+    const command = this.commands.find(
+      ({ data }) => data.name === interaction.commandName
+    )
+
+    if (!command) return
+
+    await command.execute(interaction)
+  }
+
   public async loadCommands() {
     this.commands.push(
       new PingCommand(),
@@ -31,16 +43,6 @@ export class CommandsProvider {
   }
 
   public async watchInteractions() {
-    await this.client.on(Events.InteractionCreate, async interaction => {
-      if (!interaction.isChatInputCommand()) return
-
-      const command = this.commands.find(
-        ({ data }) => data.name === interaction.commandName
-      )
-
-      if (!command) return
-
-      await command.execute(interaction)
-    })
+    await this.client.on(Events.InteractionCreate, this.executeCommand)
   }
 }
