@@ -21,8 +21,6 @@ describe('CommandsProvider', () => {
       mock<CommandsProviderConfig>()
     )
     guildMock = mock<Guild>()
-
-    commandsProvider['fetchGuild'] = vi.fn().mockResolvedValue(guildMock)
   })
 
   describe('commandBodies', () => {
@@ -30,10 +28,9 @@ describe('CommandsProvider', () => {
       const dataMock = mock<CommandData>()
       Object.defineProperty(dataMock, 'name', { value: 'test' })
       Object.defineProperty(dataMock, 'description', { value: 'test' })
-
-      vi.spyOn(commandsProvider, 'commandBodies', 'get').mockReturnValue([
-        dataMock,
-      ])
+      Object.defineProperty(commandsProvider, 'commands', {
+        value: [mock<Command>({ data: dataMock })],
+      })
 
       expect(commandsProvider.commandBodies).toEqual([dataMock])
     })
@@ -41,6 +38,10 @@ describe('CommandsProvider', () => {
 
   describe('fetchGuild', () => {
     test('should return a guild', async () => {
+      commandsProvider['client'].guilds.fetch = vi
+        .fn()
+        .mockResolvedValue(guildMock)
+
       expect(await commandsProvider['fetchGuild']()).toEqual(guildMock)
     })
   })
@@ -53,13 +54,13 @@ describe('CommandsProvider', () => {
       interactionMock = mock<ChatInputCommandInteraction<CacheType>>()
       commandMock = mock<Command>()
       commandMock.execute = vi.fn()
-
-      Object.defineProperty(commandsProvider['commands'], 'find', {
-        value: vi.fn().mockReturnValue(commandMock),
-      })
     })
 
     test('should execute a command', async () => {
+      Object.defineProperty(commandsProvider['commands'], 'find', {
+        value: vi.fn().mockReturnValue(commandMock),
+      })
+
       interactionMock.isChatInputCommand = vi.fn().mockReturnValue(true) as any
 
       await commandsProvider['executeCommand'](interactionMock)
@@ -69,7 +70,24 @@ describe('CommandsProvider', () => {
     })
 
     test('should not execute because interaction is not a command', async () => {
+      Object.defineProperty(commandsProvider['commands'], 'find', {
+        value: vi.fn().mockReturnValue(commandMock),
+      })
+
       interactionMock.isChatInputCommand = vi.fn().mockReturnValue(false) as any
+
+      await commandsProvider['executeCommand'](interactionMock)
+
+      expect(interactionMock.isChatInputCommand).toHaveBeenCalled()
+      expect(commandMock.execute).not.toHaveBeenCalled()
+    })
+
+    test('should not execute because command is not found', async () => {
+      Object.defineProperty(commandsProvider['commands'], 'find', {
+        value: vi.fn(),
+      })
+
+      interactionMock.isChatInputCommand = vi.fn().mockReturnValue(true) as any
 
       await commandsProvider['executeCommand'](interactionMock)
 
@@ -80,6 +98,8 @@ describe('CommandsProvider', () => {
 
   describe('loadCommands', async () => {
     test('should load commands', async () => {
+      commandsProvider['fetchGuild'] = vi.fn().mockResolvedValue(guildMock)
+
       vi.spyOn(commandsProvider['commands'], 'push' as any)
 
       await commandsProvider.loadCommands()
