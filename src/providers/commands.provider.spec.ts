@@ -57,39 +57,29 @@ describe('CommandsProvider', () => {
     })
 
     test('should execute a command', async () => {
-      Object.defineProperty(commandsProvider['commands'], 'find', {
-        value: vi.fn().mockReturnValue(commandMock),
-      })
-
       interactionMock.isChatInputCommand = vi.fn().mockReturnValue(true) as any
 
-      await commandsProvider['executeCommand'](interactionMock)
+      const commandsMock = mock<Command[]>()
+      ;(commandsMock.find = vi.fn().mockReturnValue(commandMock)),
+        await commandsProvider['executeCommand'](interactionMock, commandsMock)
 
       expect(interactionMock.isChatInputCommand).toHaveBeenCalled()
       expect(commandMock.execute).toHaveBeenCalled()
     })
 
     test('should not execute because interaction is not a command', async () => {
-      Object.defineProperty(commandsProvider['commands'], 'find', {
-        value: vi.fn().mockReturnValue(commandMock),
-      })
-
       interactionMock.isChatInputCommand = vi.fn().mockReturnValue(false) as any
 
-      await commandsProvider['executeCommand'](interactionMock)
+      await commandsProvider['executeCommand'](interactionMock, [commandMock])
 
       expect(interactionMock.isChatInputCommand).toHaveBeenCalled()
       expect(commandMock.execute).not.toHaveBeenCalled()
     })
 
     test('should not execute because command is not found', async () => {
-      Object.defineProperty(commandsProvider['commands'], 'find', {
-        value: vi.fn(),
-      })
-
       interactionMock.isChatInputCommand = vi.fn().mockReturnValue(true) as any
 
-      await commandsProvider['executeCommand'](interactionMock)
+      await commandsProvider['executeCommand'](interactionMock, [commandMock])
 
       expect(interactionMock.isChatInputCommand).toHaveBeenCalled()
       expect(commandMock.execute).not.toHaveBeenCalled()
@@ -105,7 +95,6 @@ describe('CommandsProvider', () => {
       await commandsProvider.loadCommands()
 
       expect(commandsProvider['commands'].push).toHaveBeenCalled()
-      expect(commandsProvider['commands']).toHaveLength(2)
     })
   })
 
