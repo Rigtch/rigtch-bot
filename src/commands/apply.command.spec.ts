@@ -9,7 +9,7 @@ import { mock } from 'vitest-mock-extended'
 
 import { ApplyCommand, ApplyCommandConfig } from './apply.command'
 
-describe('Command - Apply', () => {
+describe('ApplyCommand', () => {
   let applyCommand: ApplyCommand
 
   beforeEach(() => {
