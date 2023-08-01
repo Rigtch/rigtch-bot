@@ -48,7 +48,7 @@ export class CommandsProvider {
 
     if (!button) return
 
-    button.execute(interaction, await this.fetchGuild())
+    button.action(interaction, await this.fetchGuild())
   }
 
   public async loadCommands() {

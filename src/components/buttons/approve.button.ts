@@ -21,7 +21,7 @@ export class ApproveButton implements Button {
       .setStyle(ButtonStyle.Success)
   }
 
-  execute(interaction: ButtonInteraction<CacheType>, guild: Guild) {
+  action(interaction: ButtonInteraction<CacheType>, guild: Guild) {
     const member = getMember(guild, interaction)
 
     editMessage(interaction, ApplyCommandStatus.APPROVED)
