@@ -1,6 +1,13 @@
-import { Client, Events, Interaction, CacheType } from 'discord.js'
+import {
+  Client,
+  Events,
+  CacheType,
+  ChatInputCommandInteraction,
+  ButtonInteraction,
+} from 'discord.js'
 
 import { Command, PingCommand, ApplyCommand, ClearCommand } from '~/commands'
+import { Button, approveButton, rejectButton } from '~/components/buttons'
 
 export interface CommandsProviderConfig {
   privateBetaRequestsChannelId: string
@@ -9,6 +16,7 @@ export interface CommandsProviderConfig {
 
 export class CommandsProvider {
   private readonly commands: Command[] = []
+  private readonly buttons: Button[] = []
 
   constructor(
     private readonly client: Client,
@@ -24,18 +32,23 @@ export class CommandsProvider {
   }
 
   private async executeCommand(
-    interaction: Interaction<CacheType>,
-    commands: Command[]
+    interaction: ChatInputCommandInteraction<CacheType>
   ) {
-    if (!interaction.isChatInputCommand()) return
-
-    const command = commands.find(
+    const command = this.commands.find(
       ({ data }) => data.name === interaction.commandName
     )
 
     if (!command) return
 
     await command.execute(interaction)
+  }
+
+  private async executeButtonAction(interaction: ButtonInteraction<CacheType>) {
+    const button = this.buttons.find(({ id }) => id === interaction.customId)
+
+    if (!button) return
+
+    button.execute(interaction, await this.fetchGuild())
   }
 
   public async loadCommands() {
@@ -46,10 +59,14 @@ export class CommandsProvider {
     )
   }
 
+  public async loadButtons() {
+    this.buttons.push(approveButton, rejectButton)
+  }
+
   public async watchInteractions() {
-    await this.client.on(
-      Events.InteractionCreate,
-      async interaction => await this.executeCommand(interaction, this.commands)
-    )
+    await this.client.on(Events.InteractionCreate, async interaction => {
+      if (interaction.isButton()) this.executeButtonAction(interaction)
+      if (interaction.isChatInputCommand()) this.executeCommand(interaction)
+    })
   }
 }

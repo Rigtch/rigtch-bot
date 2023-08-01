@@ -57,6 +57,7 @@ export class BotProvider {
         }
       )
     })
+    await this.commandsProvider.loadButtons()
     await this.commandsProvider.watchInteractions()
   }
 
