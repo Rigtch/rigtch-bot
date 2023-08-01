@@ -21,7 +21,7 @@ export class RejectButton implements Button {
       .setStyle(ButtonStyle.Danger)
   }
 
-  execute(interaction: ButtonInteraction<CacheType>, guild: Guild) {
+  action(interaction: ButtonInteraction<CacheType>, guild: Guild) {
     const member = getMember(guild, interaction)
 
     editMessage(interaction, ApplyCommandStatus.REJECTED)
