@@ -49,6 +49,7 @@ describe('BotProvider', () => {
       await botProvider.initialise()
 
       expect(botProvider['commandsProvider'].loadCommands).toHaveBeenCalled()
+      expect(botProvider['commandsProvider'].loadButtons).toHaveBeenCalled()
       expect(botProvider['rest'].put).toHaveBeenCalled()
     })
   })

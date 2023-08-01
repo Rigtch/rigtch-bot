@@ -1,4 +1,5 @@
 import {
+  ButtonInteraction,
   CacheType,
   ChatInputCommandInteraction,
   Client,
@@ -10,6 +11,7 @@ import { mock } from 'vitest-mock-extended'
 import { CommandsProvider, CommandsProviderConfig } from './commands.provider'
 
 import { Command, CommandData } from '~/commands'
+import { Button } from '~/components/buttons'
 
 describe('CommandsProvider', () => {
   let commandsProvider: CommandsProvider
@@ -57,32 +59,48 @@ describe('CommandsProvider', () => {
     })
 
     test('should execute a command', async () => {
-      interactionMock.isChatInputCommand = vi.fn().mockReturnValue(true) as any
+      // @ts-expect-error - private property
+      vi.spyOn(commandsProvider['commands'], 'find').mockReturnValue(
+        commandMock
+      )
 
-      const commandsMock = mock<Command[]>()
-      ;(commandsMock.find = vi.fn().mockReturnValue(commandMock)),
-        await commandsProvider['executeCommand'](interactionMock, commandsMock)
+      await commandsProvider['executeCommand'](interactionMock)
 
-      expect(interactionMock.isChatInputCommand).toHaveBeenCalled()
       expect(commandMock.execute).toHaveBeenCalled()
     })
 
-    test('should not execute because interaction is not a command', async () => {
-      interactionMock.isChatInputCommand = vi.fn().mockReturnValue(false) as any
+    test('should not execute because command is not found', async () => {
+      await commandsProvider['executeCommand'](interactionMock)
 
-      await commandsProvider['executeCommand'](interactionMock, [commandMock])
-
-      expect(interactionMock.isChatInputCommand).toHaveBeenCalled()
       expect(commandMock.execute).not.toHaveBeenCalled()
     })
+  })
 
-    test('should not execute because command is not found', async () => {
-      interactionMock.isChatInputCommand = vi.fn().mockReturnValue(true) as any
+  describe('executeButtonAction', () => {
+    let interactionMock: ButtonInteraction<CacheType>
+    let buttonMock: Button
 
-      await commandsProvider['executeCommand'](interactionMock, [commandMock])
+    beforeEach(() => {
+      interactionMock = mock<ButtonInteraction<CacheType>>()
+      buttonMock = mock<Button>()
+      buttonMock.action = vi.fn()
 
-      expect(interactionMock.isChatInputCommand).toHaveBeenCalled()
-      expect(commandMock.execute).not.toHaveBeenCalled()
+      commandsProvider['fetchGuild'] = vi.fn().mockResolvedValue(guildMock)
+    })
+
+    test('should execute a button action', async () => {
+      // @ts-expect-error - private property
+      vi.spyOn(commandsProvider['buttons'], 'find').mockReturnValue(buttonMock)
+
+      await commandsProvider['executeButtonAction'](interactionMock)
+
+      expect(buttonMock.action).toHaveBeenCalled()
+    })
+
+    test('should not execute because button is not found', async () => {
+      await commandsProvider['executeButtonAction'](interactionMock)
+
+      expect(buttonMock.action).not.toHaveBeenCalled()
     })
   })
 
@@ -95,6 +113,18 @@ describe('CommandsProvider', () => {
       await commandsProvider.loadCommands()
 
       expect(commandsProvider['commands'].push).toHaveBeenCalled()
+    })
+  })
+
+  describe('loadButtons', () => {
+    test('should load buttons', async () => {
+      commandsProvider['fetchGuild'] = vi.fn().mockResolvedValue(guildMock)
+
+      vi.spyOn(commandsProvider['buttons'], 'push' as any)
+
+      await commandsProvider.loadButtons()
+
+      expect(commandsProvider['buttons'].push).toHaveBeenCalled()
     })
   })
 
