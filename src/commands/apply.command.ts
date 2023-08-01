@@ -10,9 +10,16 @@ import {
   SlashCommandBuilder,
 } from 'discord.js'
 
-import { Command } from './types/index'
+import { Command } from './types'
 
 import { Color, Image } from '~/config'
+import { applyCommandActionRow } from '~/components/action-rows'
+
+export enum ApplyCommandStatus {
+  PENDING = 'Pending',
+  APPROVED = 'Approved',
+  REJECTED = 'Rejected',
+}
 
 export interface ApplyCommandConfig {
   privateBetaRequestsChannelId: string
@@ -69,6 +76,10 @@ export class ApplyCommand implements Command {
           name: 'Discord User',
           value: discordUser.toString(),
         },
+        {
+          name: 'Status',
+          value: ApplyCommandStatus.PENDING,
+        },
       ])
       .setTimestamp()
       .setFooter({
@@ -83,6 +94,7 @@ export class ApplyCommand implements Command {
 
     await this.privateBetaRequestsChannel.send({
       embeds: [this.applicationEmbedFactory(name, email, interaction.member)],
+      components: [applyCommandActionRow],
     })
 
     await interaction.reply('Your application has been sent!')
