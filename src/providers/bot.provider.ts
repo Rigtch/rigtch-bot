@@ -1,4 +1,11 @@
-import { Client, GatewayIntentBits, Partials, REST, Routes } from 'discord.js'
+import {
+  ActivityType,
+  Client,
+  GatewayIntentBits,
+  Partials,
+  REST,
+  Routes,
+} from 'discord.js'
 
 import { CommandsProvider } from './commands.provider'
 
@@ -37,6 +44,15 @@ export class BotProvider {
         console.log('Bot is ready')
 
         resolve()
+
+        this.client.user.setPresence({
+          activities: [
+            {
+              type: ActivityType.Listening,
+              name: 'Rigtch Music',
+            },
+          ],
+        })
       })
 
       this.client.login(this.config.token)
