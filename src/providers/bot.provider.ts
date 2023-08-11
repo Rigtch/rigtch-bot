@@ -1,6 +1,7 @@
 import {
   ActivityType,
   Client,
+  Events,
   GatewayIntentBits,
   Partials,
   REST,
@@ -40,7 +41,7 @@ export class BotProvider {
 
   public async login(): Promise<void> {
     return new Promise(resolve => {
-      this.client.once('ready', () => {
+      this.client.once(Events.ClientReady, () => {
         console.log('Bot is ready')
 
         resolve()
@@ -56,6 +57,11 @@ export class BotProvider {
       })
 
       this.client.login(this.config.token)
+      this.client.on(Events.GuildMemberAdd, member => {
+        member.roles.add(
+          member.guild.roles.cache.find(role => role.name === 'User')
+        )
+      })
 
       this.initialise()
     })
