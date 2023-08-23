@@ -1,9 +1,16 @@
 import { Command, Handler, InteractionEvent } from '@discord-nestjs/core'
 import { SlashCommandPipe } from '@discord-nestjs/common'
-import { Injectable, UsePipes } from '@nestjs/common'
-import { ApplicationCommandType } from 'discord.js'
+import { Injectable } from '@nestjs/common'
+import {
+  ApplicationCommandType,
+  ChatInputCommandInteraction,
+  InteractionReplyOptions,
+  PermissionsBitField,
+} from 'discord.js'
 
-import { Clear } from '../dtos/clear.dto'
+import { Clear } from '../dtos'
+
+import { Permissions } from '@common/decorators'
 
 @Command({
   name: 'clear',
@@ -11,14 +18,18 @@ import { Clear } from '../dtos/clear.dto'
   type: ApplicationCommandType.ChatInput,
 })
 @Injectable()
-@UsePipes(SlashCommandPipe)
 export class ClearCommand {
   @Handler()
-  handle(@InteractionEvent(SlashCommandPipe) e: Clear) {
-    console.log(e.amount)
+  @Permissions([PermissionsBitField.Flags.ManageMessages])
+  async handle(
+    @InteractionEvent(SlashCommandPipe) { amount, silent }: Clear,
+    @InteractionEvent() { channel }: ChatInputCommandInteraction
+  ): Promise<InteractionReplyOptions> {
+    await channel.bulkDelete(amount)
 
-    console.log(e)
-
-    return 'Clear!'
+    return {
+      content: `Cleared ${amount} messages`,
+      ephemeral: silent,
+    }
   }
 }
