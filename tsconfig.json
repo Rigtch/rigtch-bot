@@ -23,7 +23,8 @@
       "~/*": ["src/*"],
       "@modules/*": ["src/modules/*"],
       "@common/*": ["src/common/*"],
-      "@config/*": ["src/config/*"]
+      "@config/*": ["src/config/*"],
+      "@components/*": ["src/components/*"]
     }
   },
   "include": ["src"],
