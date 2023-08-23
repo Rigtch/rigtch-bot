@@ -7,6 +7,9 @@
       "decorators": true,
       "dynamicImport": true
     },
+    "transform": {
+      "useDefineForClassFields": true
+    },
     "baseUrl": "./"
   },
   "minify": false
