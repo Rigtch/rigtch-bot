@@ -276,19 +276,19 @@
   dependencies:
     "@jridgewell/trace-mapping" "0.3.9"
 
-"@discord-nestjs/common@5.2.7":
-  version "5.2.7"
-  resolved "https://registry.yarnpkg.com/@discord-nestjs/common/-/common-5.2.7.tgz#6afe3ce194d59d5104e5c447817d5632ec3bc898"
-  integrity sha512-Guk3Y+hJ4iuqB50SdbJAx4H5z2+xyUsU9sJ616cZ2P2n5n9VE6SJAfpA2zC5v9vbTQThW/FcXNF0aZ37tHAF6w==
+"@discord-nestjs/common@5.2.8":
+  version "5.2.8"
+  resolved "https://registry.yarnpkg.com/@discord-nestjs/common/-/common-5.2.8.tgz#5d5f2963aa1e18ee2d41badb9a565f8eef51db57"
+  integrity sha512-gFzjD1vxTbJz9gYE16BAC92UDmtnWyViPCBt3V2S/18lmStXlYhlDJYzeBKFbKjTT7OdJK7RjJwjfSIknv2JoQ==
   dependencies:
     "@nestjs/mapped-types" "2.0.2"
     class-transformer "0.5.1"
     class-validator "0.14.0"
 
-"@discord-nestjs/core@5.3.9":
-  version "5.3.9"
-  resolved "https://registry.yarnpkg.com/@discord-nestjs/core/-/core-5.3.9.tgz#ba2639bab2c2b479b3afabbe9b0a36ac477055aa"
-  integrity sha512-pG1K5ofzL+rfz0Qhkyf+Q2d7RDvjD9Mz1By13EwXpWqwlswCYxRj0bfNdsJ7C/ksc0DjA2t6Rc1yl+MaAeFbyQ==
+"@discord-nestjs/core@5.3.10":
+  version "5.3.10"
+  resolved "https://registry.yarnpkg.com/@discord-nestjs/core/-/core-5.3.10.tgz#e8042a4f8c86351ba77bd79ea36e2031dc104971"
+  integrity sha512-mJ3Y4DjyXf7adstWNqtpylgiZX0EuJ4gtO+i90f6o00KoUjyA5yJbtEDqYN4LTP/cbghQjaPO0tqloOPTosGdg==
   dependencies:
     class-transformer "0.5.1"
 
@@ -656,10 +656,10 @@
     webpack "5.88.2"
     webpack-node-externals "3.0.0"
 
-"@nestjs/common@^10.1.3":
-  version "10.1.3"
-  resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-10.1.3.tgz#7f80d7c011e94bfb2177100cc8862e4fc65a6630"
-  integrity sha512-xSyXBwgcmiFwQqek1Urw/AL3pRPq9bp/tpgfTxmnJg3gP6XNUbx1fDr0de50irXgZYzFKfVFo9ptC3b2du5YKA==
+"@nestjs/common@^10.2.1":
+  version "10.2.1"
+  resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-10.2.1.tgz#ec31de16d8594ec74e51cdd30190998c59324d1b"
+  integrity sha512-zo5OQbNmchV58SHw4vBCLIbsCrpZmNuW9W4m5BE1lB+9FW9ZiLQeZjIxzlL3bEKiI9cezRvDhct/53LPS8R4aA==
   dependencies:
     uid "2.0.2"
     iterare "1.2.1"
