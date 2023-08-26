@@ -1,13 +1,12 @@
 import { DiscordModule } from '@discord-nestjs/core'
 import { Module } from '@nestjs/common'
 
+import { ApplyCommand, ClearCommand, PingCommand } from './commands'
 import { BotGateway } from './bot.gateway'
-import { ClearCommand, PingCommand } from './commands'
-import { PlayCommand } from './commands/play.command'
+import { BotService } from './bot.service'
 
 @Module({
   imports: [DiscordModule.forFeature()],
-  // providers: [BotGateway, PingCommand, ClearCommand, PlayCommand],
-  providers: [PlayCommand],
+  providers: [BotService, BotGateway, PingCommand, ClearCommand, ApplyCommand],
 })
 export class BotModule {}
