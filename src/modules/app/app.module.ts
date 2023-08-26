@@ -2,9 +2,11 @@ import { Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { DiscordModule } from '@discord-nestjs/core'
 import { GatewayIntentBits, Partials } from 'discord.js'
+import { APP_GUARD } from '@nestjs/core'
 
 import { BotModule } from '@modules/bot'
 import { Environment, environmentValidationSchema } from '@config/environment'
+import { InteractionTypeGuard, PermissionsGuard } from '@common/guards'
 
 @Module({
   imports: [
@@ -19,10 +21,11 @@ import { Environment, environmentValidationSchema } from '@config/environment'
         discordClientOptions: {
           intents: [
             GatewayIntentBits.Guilds,
-            GatewayIntentBits.MessageContent,
-            GatewayIntentBits.DirectMessages,
             GatewayIntentBits.GuildMembers,
             GatewayIntentBits.GuildPresences,
+            GatewayIntentBits.GuildMessages,
+            GatewayIntentBits.DirectMessages,
+            GatewayIntentBits.MessageContent,
           ],
           partials: [Partials.Channel],
         },
@@ -38,6 +41,16 @@ import { Environment, environmentValidationSchema } from '@config/environment'
       inject: [ConfigService],
     }),
     BotModule,
+  ],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: PermissionsGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: InteractionTypeGuard,
+    },
   ],
 })
 export class AppModule {}
