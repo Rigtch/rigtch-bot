@@ -15,6 +15,8 @@ export class PermissionsGuard implements CanActivate {
       context.getHandler()
     )
 
+    if (!requiredPermissions) return true
+
     const { member } = context.getArgByIndex<ChatInputCommandInteraction>(0)
 
     if (!member) return false

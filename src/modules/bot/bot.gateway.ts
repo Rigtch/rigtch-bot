@@ -1,4 +1,4 @@
-import { InjectDiscordClient, Once } from '@discord-nestjs/core'
+import { InjectDiscordClient, On, Once } from '@discord-nestjs/core'
 import { Injectable, Logger } from '@nestjs/common'
 import { ActivityType, Client, Events } from 'discord.js'
 
@@ -22,7 +22,7 @@ export class BotGateway {
     })
   }
 
-  @Once(Events.GuildMemberAdd)
+  @On(Events.GuildMemberAdd)
   onGuildMemberAdd(member): void {
     member.roles.add(
       member.guild.roles.cache.find(role => role.name === 'User')
